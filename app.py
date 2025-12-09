@@ -54,8 +54,10 @@ def get_students():
     """Get list of all student names from Google Sheet"""
     try:
         worksheet = get_sheet()
+        print(f"DEBUG: Found worksheet: {worksheet.title}")
         # Get all values from column A (student names)
         all_values = worksheet.get_all_values()
+        print(f"DEBUG: Total rows in sheet: {len(all_values)}")
         
         # Skip header row (row 0) and get student names from column A
         students = []
@@ -63,8 +65,10 @@ def get_students():
             if row and row[0] and row[0].strip():  # Check if name exists
                 students.append(row[0].strip())
         
+        print(f"DEBUG: Found {len(students)} students")
         return jsonify({'students': students})
     except Exception as e:
+        print(f"ERROR: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/entries', methods=['GET'])
