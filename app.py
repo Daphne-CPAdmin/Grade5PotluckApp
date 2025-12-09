@@ -3,6 +3,7 @@ from flask_cors import CORS
 import gspread
 from google.oauth2.service_account import Credentials
 import os
+import json
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,10 +16,17 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 def get_sheets_client():
     """Initialize Google Sheets client"""
-    creds = Credentials.from_service_account_file(
-        'credentials.json',
-        scopes=SCOPES
-    )
+    # Try to get credentials from environment variable first (for Render deployment)
+    credentials_json = os.getenv('GOOGLE_CREDENTIALS')
+    
+    if credentials_json:
+        # Running on Render - use environment variable
+        creds_dict = json.loads(credentials_json)
+        creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
+    else:
+        # Running locally - use credentials.json file
+        creds = Credentials.from_service_account_file('credentials.json', scopes=SCOPES)
+    
     return gspread.authorize(creds)
 
 def get_sheet():
