@@ -1,4 +1,5 @@
-const API_BASE = 'http://localhost:5001/api';
+// Use relative URLs so it works both locally and on Render
+const API_BASE = '/api';
 
 let allStudents = [];
 let selectedStudent = '';
