@@ -172,82 +172,90 @@ async function loadEntries() {
             foodCounts[foodKey].students.push(entry.student);
         });
         
-        // Display grouped entries as cards
+        // Display categories as cards with entries as line items inside
         container.innerHTML = '';
         
         // Order of categories
         const categoryOrder = ['Main Dish', 'Rice', 'Appetizer', 'Dessert', 'Drinks', 'Fruits'];
         
+        // Create grid for category cards
+        const categoryCardsGrid = document.createElement('div');
+        categoryCardsGrid.className = 'category-cards-grid';
+        
         categoryOrder.forEach(category => {
             if (grouped[category] && grouped[category].length > 0) {
-                const categorySection = document.createElement('div');
-                categorySection.className = 'category-section';
+                // Create category card
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card';
                 
+                // Category header
                 const categoryHeader = document.createElement('div');
-                categoryHeader.className = 'category-header';
+                categoryHeader.className = 'category-card-header';
                 categoryHeader.textContent = `${category} (${grouped[category].length})`;
-                categorySection.appendChild(categoryHeader);
+                categoryCard.appendChild(categoryHeader);
                 
-                // Create cards grid for this category
-                const cardsGrid = document.createElement('div');
-                cardsGrid.className = 'entry-cards-grid';
+                // Entries list inside category card
+                const entriesList = document.createElement('div');
+                entriesList.className = 'category-entries-list';
                 
                 grouped[category].forEach(entry => {
-                    const entryCard = document.createElement('div');
-                    entryCard.className = 'entry-card';
+                    const entryLine = document.createElement('div');
+                    entryLine.className = 'entry-line-item';
                     
                     const foodKey = entry.food_name.toLowerCase();
                     const count = foodCounts[foodKey].count;
-                    const countBadge = count > 1 ? `<span class="count-badge">x${count}</span>` : '';
+                    const countBadge = count > 1 ? ` <span class="count-badge">x${count}</span>` : '';
                     
-                    entryCard.innerHTML = `
-                        <div class="student-name">${entry.student}</div>
-                        <div class="category">${entry.category}</div>
-                        <div class="food-name">${entry.food_name}${countBadge}</div>
+                    entryLine.innerHTML = `
+                        <span class="entry-student">${entry.student}</span>
+                        <span class="entry-food">${entry.food_name}${countBadge}</span>
                     `;
-                    cardsGrid.appendChild(entryCard);
+                    entriesList.appendChild(entryLine);
                 });
                 
-                categorySection.appendChild(cardsGrid);
-                container.appendChild(categorySection);
+                categoryCard.appendChild(entriesList);
+                categoryCardsGrid.appendChild(categoryCard);
             }
         });
         
         // Add any categories not in the predefined order
         Object.keys(grouped).forEach(category => {
             if (!categoryOrder.includes(category)) {
-                const categorySection = document.createElement('div');
-                categorySection.className = 'category-section';
+                // Create category card
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card';
                 
+                // Category header
                 const categoryHeader = document.createElement('div');
-                categoryHeader.className = 'category-header';
+                categoryHeader.className = 'category-card-header';
                 categoryHeader.textContent = `${category} (${grouped[category].length})`;
-                categorySection.appendChild(categoryHeader);
+                categoryCard.appendChild(categoryHeader);
                 
-                // Create cards grid for this category
-                const cardsGrid = document.createElement('div');
-                cardsGrid.className = 'entry-cards-grid';
+                // Entries list inside category card
+                const entriesList = document.createElement('div');
+                entriesList.className = 'category-entries-list';
                 
                 grouped[category].forEach(entry => {
-                    const entryCard = document.createElement('div');
-                    entryCard.className = 'entry-card';
+                    const entryLine = document.createElement('div');
+                    entryLine.className = 'entry-line-item';
                     
                     const foodKey = entry.food_name.toLowerCase();
                     const count = foodCounts[foodKey].count;
-                    const countBadge = count > 1 ? `<span class="count-badge">x${count}</span>` : '';
+                    const countBadge = count > 1 ? ` <span class="count-badge">x${count}</span>` : '';
                     
-                    entryCard.innerHTML = `
-                        <div class="student-name">${entry.student}</div>
-                        <div class="category">${entry.category}</div>
-                        <div class="food-name">${entry.food_name}${countBadge}</div>
+                    entryLine.innerHTML = `
+                        <span class="entry-student">${entry.student}</span>
+                        <span class="entry-food">${entry.food_name}${countBadge}</span>
                     `;
-                    cardsGrid.appendChild(entryCard);
+                    entriesList.appendChild(entryLine);
                 });
                 
-                categorySection.appendChild(cardsGrid);
-                container.appendChild(categorySection);
+                categoryCard.appendChild(entriesList);
+                categoryCardsGrid.appendChild(categoryCard);
             }
         });
+        
+        container.appendChild(categoryCardsGrid);
     } catch (error) {
         console.error('Error loading entries:', error);
         const container = document.getElementById('entriesContainer');
