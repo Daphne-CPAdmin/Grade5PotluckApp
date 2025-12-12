@@ -93,6 +93,12 @@ def get_entries():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+def format_proper_name(text):
+    """Format text in Proper Name format (Title Case)"""
+    if not text:
+        return ''
+    return ' '.join(word.capitalize() for word in text.split())
+
 @app.route('/api/submit', methods=['POST'])
 def submit_entry():
     """Submit a new food entry"""
@@ -104,6 +110,9 @@ def submit_entry():
         
         if not all([student, category, food_name]):
             return jsonify({'error': 'All fields are required'}), 400
+        
+        # Format food name in Proper Name format
+        food_name = format_proper_name(food_name)
         
         worksheet = get_sheet()
         all_values = worksheet.get_all_values()

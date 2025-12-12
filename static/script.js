@@ -4,6 +4,15 @@ const API_BASE = '/api';
 let allStudents = [];
 let selectedStudent = '';
 
+// Format text in Proper Name format (Title Case)
+function formatProperName(text) {
+    if (!text) return '';
+    return text.toLowerCase()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
 // Load students into dropdown
 async function loadStudents() {
     try {
@@ -206,9 +215,13 @@ async function loadEntries() {
                     const count = foodCounts[foodKey].count;
                     const countBadge = count > 1 ? ` <span class="count-badge">x${count}</span>` : '';
                     
+                    // Format names in Proper Name format
+                    const formattedStudent = formatProperName(entry.student);
+                    const formattedFood = formatProperName(entry.food_name);
+                    
                     entryLine.innerHTML = `
-                        <span class="entry-student">${entry.student}</span>
-                        <span class="entry-food">${entry.food_name}${countBadge}</span>
+                        <span class="entry-student">${formattedStudent}</span>
+                        <span class="entry-food">${formattedFood}${countBadge}</span>
                     `;
                     entriesList.appendChild(entryLine);
                 });
@@ -243,9 +256,13 @@ async function loadEntries() {
                     const count = foodCounts[foodKey].count;
                     const countBadge = count > 1 ? ` <span class="count-badge">x${count}</span>` : '';
                     
+                    // Format names in Proper Name format
+                    const formattedStudent = formatProperName(entry.student);
+                    const formattedFood = formatProperName(entry.food_name);
+                    
                     entryLine.innerHTML = `
-                        <span class="entry-student">${entry.student}</span>
-                        <span class="entry-food">${entry.food_name}${countBadge}</span>
+                        <span class="entry-student">${formattedStudent}</span>
+                        <span class="entry-food">${formattedFood}${countBadge}</span>
                     `;
                     entriesList.appendChild(entryLine);
                 });
@@ -280,10 +297,14 @@ function showMessage(text, type) {
 document.getElementById('foodForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
+    // Format food name in Proper Name format before submission
+    const foodNameInput = document.getElementById('foodName');
+    const formattedFoodName = formatProperName(foodNameInput.value);
+    
     const formData = {
         student: document.getElementById('student').value,
         category: document.getElementById('category').value,
-        food_name: document.getElementById('foodName').value
+        food_name: formattedFoodName
     };
     
     try {
@@ -304,6 +325,9 @@ document.getElementById('foodForm').addEventListener('submit', async (e) => {
             document.getElementById('category').value = '';
             document.getElementById('foodName').value = '';
             
+            // Update food name input with formatted value (for visual feedback)
+            foodNameInput.value = formattedFoodName;
+            
             // Reload entries to show the new one
             await loadEntries();
         } else {
@@ -312,6 +336,13 @@ document.getElementById('foodForm').addEventListener('submit', async (e) => {
     } catch (error) {
         console.error('Error submitting entry:', error);
         showMessage('Error submitting entry. Please try again.', 'error');
+    }
+});
+
+// Auto-format food name input on blur
+foodInput.addEventListener('blur', (e) => {
+    if (e.target.value) {
+        e.target.value = formatProperName(e.target.value);
     }
 });
 
