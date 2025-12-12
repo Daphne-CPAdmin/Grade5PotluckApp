@@ -6,14 +6,46 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #48bb78 75%, #9ae6b4 100%);
+    background: linear-gradient(135deg, #1a472a 0%, #2d5016 25%, #c41e3a 50%, #1a472a 75%, #2d5016 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
     min-height: 100vh;
     padding: 20px;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
 
 header {
@@ -21,10 +53,11 @@ header {
     color: white;
     margin-bottom: 40px;
     padding: 30px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(196, 30, 58, 0.2);
     backdrop-filter: blur(10px);
     border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 header h1 {
@@ -39,19 +72,23 @@ header h1 {
 }
 
 .content-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
     margin-bottom: 30px;
 }
 
-@media (max-width: 768px) {
-    .content-wrapper {
-        grid-template-columns: 1fr;
-    }
+.entries-section {
+    margin-top: 30px;
 }
 
-.form-section, .entries-section {
+.form-section {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.entries-section {
     background: white;
     padding: 30px;
     border-radius: 20px;
@@ -59,7 +96,7 @@ header h1 {
 }
 
 .form-section h2, .entries-section h2 {
-    color: #667eea;
+    color: #c41e3a;
     margin-bottom: 25px;
     font-size: 1.8em;
     text-align: center;
@@ -91,9 +128,9 @@ header h1 {
 .form-group select:focus,
 .form-group input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #c41e3a;
     background: white;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.1);
 }
 
 /* Autocomplete styles */
@@ -107,7 +144,7 @@ header h1 {
     left: 0;
     right: 0;
     background: white;
-    border: 2px solid #667eea;
+    border: 2px solid #c41e3a;
     border-top: none;
     border-radius: 0 0 10px 10px;
     max-height: 200px;
@@ -134,7 +171,7 @@ header h1 {
 
 .autocomplete-item:hover,
 .autocomplete-item.active {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(72, 187, 120, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(196, 30, 58, 0.1) 0%, rgba(26, 71, 42, 0.1) 100%);
 }
 
 .autocomplete-item mark {
@@ -152,7 +189,7 @@ header h1 {
 .submit-btn {
     width: 100%;
     padding: 15px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #c41e3a 0%, #8b1538 100%);
     color: white;
     border: none;
     border-radius: 10px;
@@ -161,11 +198,12 @@ header h1 {
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(196, 30, 58, 0.3);
 }
 
 .submit-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 5px 20px rgba(196, 30, 58, 0.5);
 }
 
 .submit-btn:active {
@@ -213,22 +251,23 @@ header h1 {
 }
 
 .category-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #c41e3a 0%, #8b1538 100%);
     color: white;
     padding: 12px 20px;
     border-radius: 10px;
     font-size: 1.2em;
     font-weight: 700;
     margin-bottom: 10px;
-    box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 3px 10px rgba(196, 30, 58, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .entry-item {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(72, 187, 120, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(196, 30, 58, 0.05) 0%, rgba(26, 71, 42, 0.05) 100%);
     padding: 12px 20px;
     margin-bottom: 8px;
     border-radius: 8px;
-    border-left: 4px solid #48bb78;
+    border-left: 4px solid #1a472a;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -237,7 +276,7 @@ header h1 {
 
 .entry-item:hover {
     transform: translateX(5px);
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(72, 187, 120, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(196, 30, 58, 0.1) 0%, rgba(26, 71, 42, 0.1) 100%);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -262,7 +301,7 @@ header h1 {
 
 .student-item {
     font-size: 0.95em;
-    color: #667eea;
+    color: #c41e3a;
     font-weight: 500;
     font-style: italic;
     text-align: right;
@@ -270,13 +309,32 @@ header h1 {
 }
 
 .entry-card {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(72, 187, 120, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(196, 30, 58, 0.1) 0%, rgba(26, 71, 42, 0.1) 100%);
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 15px;
-    border-left: 5px solid #667eea;
+    border-left: 5px solid #c41e3a;
     transition: all 0.3s ease;
     animation: slideIn 0.5s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.entry-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.entry-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+    .entry-cards-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @keyframes slideIn {
@@ -290,34 +348,43 @@ header h1 {
     }
 }
 
-.entry-card:hover {
-    transform: translateX(5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
 .entry-card .student-name {
     font-size: 1.2em;
     font-weight: 700;
     color: #2d3748;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .entry-card .category {
     display: inline-block;
     padding: 5px 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #c41e3a 0%, #8b1538 100%);
     color: white;
     border-radius: 20px;
     font-size: 0.85em;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .entry-card .food-name {
     font-size: 1.1em;
-    color: #48bb78;
+    color: #1a472a;
     font-weight: 600;
-    margin-top: 5px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.entry-card .food-name .count-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 700;
+    box-shadow: 0 2px 5px rgba(237, 137, 54, 0.3);
 }
 
 .loading {
@@ -345,11 +412,11 @@ header h1 {
 }
 
 .entries-container::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #667eea 0%, #48bb78 100%);
+    background: linear-gradient(135deg, #c41e3a 0%, #1a472a 100%);
     border-radius: 10px;
 }
 
 .entries-container::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #38a169 100%);
+    background: linear-gradient(135deg, #8b1538 0%, #2d5016 100%);
 }
 

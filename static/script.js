@@ -38,7 +38,7 @@ async function checkExistingEntry(studentName) {
             categorySelect.value = existing.category;
             foodInput.value = existing.food_name;
             submitBtn.textContent = 'Update Entry';
-            submitBtn.style.background = 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)';
+            submitBtn.style.background = 'linear-gradient(135deg, #1a472a 0%, #2d5016 100%)';
             
             // Show update message
             showMessage(`Updating entry for ${studentName}`, 'info');
@@ -47,7 +47,7 @@ async function checkExistingEntry(studentName) {
             categorySelect.value = '';
             foodInput.value = '';
             submitBtn.textContent = 'Submit Entry';
-            submitBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            submitBtn.style.background = 'linear-gradient(135deg, #c41e3a 0%, #8b1538 100%)';
         }
     } catch (error) {
         console.error('Error checking existing entry:', error);
@@ -172,7 +172,7 @@ async function loadEntries() {
             foodCounts[foodKey].students.push(entry.student);
         });
         
-        // Display grouped entries
+        // Display grouped entries as cards
         container.innerHTML = '';
         
         // Order of categories
@@ -188,21 +188,27 @@ async function loadEntries() {
                 categoryHeader.textContent = `${category} (${grouped[category].length})`;
                 categorySection.appendChild(categoryHeader);
                 
+                // Create cards grid for this category
+                const cardsGrid = document.createElement('div');
+                cardsGrid.className = 'entry-cards-grid';
+                
                 grouped[category].forEach(entry => {
-                    const entryItem = document.createElement('div');
-                    entryItem.className = 'entry-item';
+                    const entryCard = document.createElement('div');
+                    entryCard.className = 'entry-card';
                     
                     const foodKey = entry.food_name.toLowerCase();
                     const count = foodCounts[foodKey].count;
-                    const countBadge = count > 1 ? ` <span class="count-badge">x${count}</span>` : '';
+                    const countBadge = count > 1 ? `<span class="count-badge">x${count}</span>` : '';
                     
-                    entryItem.innerHTML = `
-                        <span class="food-item">${entry.food_name}${countBadge}</span>
-                        <span class="student-item">${entry.student}</span>
+                    entryCard.innerHTML = `
+                        <div class="student-name">${entry.student}</div>
+                        <div class="category">${entry.category}</div>
+                        <div class="food-name">${entry.food_name}${countBadge}</div>
                     `;
-                    categorySection.appendChild(entryItem);
+                    cardsGrid.appendChild(entryCard);
                 });
                 
+                categorySection.appendChild(cardsGrid);
                 container.appendChild(categorySection);
             }
         });
@@ -218,21 +224,27 @@ async function loadEntries() {
                 categoryHeader.textContent = `${category} (${grouped[category].length})`;
                 categorySection.appendChild(categoryHeader);
                 
+                // Create cards grid for this category
+                const cardsGrid = document.createElement('div');
+                cardsGrid.className = 'entry-cards-grid';
+                
                 grouped[category].forEach(entry => {
-                    const entryItem = document.createElement('div');
-                    entryItem.className = 'entry-item';
+                    const entryCard = document.createElement('div');
+                    entryCard.className = 'entry-card';
                     
                     const foodKey = entry.food_name.toLowerCase();
                     const count = foodCounts[foodKey].count;
-                    const countBadge = count > 1 ? ` <span class="count-badge">x${count}</span>` : '';
+                    const countBadge = count > 1 ? `<span class="count-badge">x${count}</span>` : '';
                     
-                    entryItem.innerHTML = `
-                        <span class="food-item">${entry.food_name}${countBadge}</span>
-                        <span class="student-item">${entry.student}</span>
+                    entryCard.innerHTML = `
+                        <div class="student-name">${entry.student}</div>
+                        <div class="category">${entry.category}</div>
+                        <div class="food-name">${entry.food_name}${countBadge}</div>
                     `;
-                    categorySection.appendChild(entryItem);
+                    cardsGrid.appendChild(entryCard);
                 });
                 
+                categorySection.appendChild(cardsGrid);
                 container.appendChild(categorySection);
             }
         });
